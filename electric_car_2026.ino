@@ -47,6 +47,10 @@ int right_motor_pin_2 = 5;
 int ena = 11;
 int fnb = 10;
 
+int trig_pin = 7;
+int echo_pin = 6;
+float duration, distance;
+
 void setup_pins(){
   pinMode(left_motor_pin_1, OUTPUT);
   pinMode(left_motor_pin_2, OUTPUT);
@@ -55,6 +59,8 @@ void setup_pins(){
   pinMode(ena, OUTPUT);
   pinMode(fnb, OUTPUT);
   pinMode(button_pin, INPUT_PULLUP);
+  pinMode(trig_pin, OUTPUT);
+  pinMode(echo_pin, INPUT);
 }
 
 void setup(){
@@ -73,12 +79,43 @@ void on_button() {
   last_button = current_button;
 }
 
+float read_distance(){
+  digitalWrite(trig_pin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig_pin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig_pin, LOW);
+  duration = pulseIn(echo_pin, HIGH);
+  distance = duration / 148.0; //converts to inches dividing duration by speed of sound (.0125 in/ micro second)
+  Serial.print("Distance: ");
+  Serial.println(distance);
+  delay(100);
+  return distance;
+}
+
+
 void run_motors(){
   analogWrite(ena, 120);
   analogWrite(fnb, 120);
   digitalWrite(left_motor_pin_1, LOW);
   digitalWrite(left_motor_pin_2, HIGH);
   digitalWrite(right_motor_pin_1, HIGH);
+  digitalWrite(right_motor_pin_2, LOW);
+}
+
+void backup_motors(int duration){
+  analogWrite(ena, 120);
+  analogWrite(fnb, 120);
+  digitalWrite(left_motor_pin_1, HIGH);
+  digitalWrite(left_motor_pin_2, LOW);
+  digitalWrite(right_motor_pin_1, LOW);
+  digitalWrite(right_motor_pin_2, HIGH);
+  delay(duration);
+  analogWrite(ena, 0);
+  analogWrite(fnb, 0);
+  digitalWrite(left_motor_pin_1, LOW);
+  digitalWrite(left_motor_pin_2, LOW);
+  digitalWrite(right_motor_pin_1, LOW);
   digitalWrite(right_motor_pin_2, LOW);
 }
 
@@ -90,12 +127,28 @@ void stop_motors(){
   digitalWrite(right_motor_pin_1, LOW);
   digitalWrite(right_motor_pin_2, LOW);
 }
+
+void turn_motors(int time){
+  analogWrite(ena, 120);
+  analogWrite(fnb, 120);
+  digitalWrite(left_motor_pin_1, LOW);
+  digitalWrite(left_motor_pin_2, HIGH);
+  digitalWrite(right_motor_pin_1, LOW);
+  digitalWrite(right_motor_pin_2, HIGH);
+  delay(time);
+ 
+}
+
 void loop(){
+  float car_distance = read_distance();
   on_button();
-  //logic will say IF no button is 1 call run motor function else call stop motor function
-  if(state == 1){
-    run_motors();
-  }else{
+  if (state == 0) {
     stop_motors();
-  }
+  } else if (car_distance > 10.0) {
+      run_motors();
+  } else {
+      stop_motors();
+      backup_motors(1000);
+      turn_motors(300);
+}
 }
