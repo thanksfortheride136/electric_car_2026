@@ -9,15 +9,17 @@ Pinout:
 
 Arduino Nano:
 GND -> Shared GND
-D2 -> GND
-D3 -> Motor Controller IN2
-D4 -> Motor Controller IN3
-D5 -> Motor Controller IN4
-D6 -> Ultrasonic Echo
-D7 -> Ultrasonic Trig
+D2 -> Button Left Pin
+D3 -> Ultrasonic Trig      
+D4 -> Ultrasonic Echo
+D5 -> 
+D6 ->  
+D7 ->  Motor Controller IN2
 D8 -> Motor Controller IN1
-D10 -> Motor Controller FNB (ENB)
-D11 -> Motor Controller (ENA)
+D9 -> Motor Controller IN4
+D10 -> Motor Controller (ENA)
+D11 ->  Motor Controller FNB (ENB)
+D12 -> Motor Controller IN3
 5V -> Ultrasonic VCC
 Vin -> 9V Battery Screw Terminal V
 
@@ -33,6 +35,10 @@ GND -> Shared GND
 
 Ultrasonic Sensor:
 GND -> Shared GND
+
+Button:
+Signal Pin bottom left -> D2
+Bottom Right Pin -> Shared GND
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 int button_pin = 2;
