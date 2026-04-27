@@ -1,10 +1,14 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Autonomous Electric Vehicle 4/23/26
 This is a simple electric vehicle design that uses Arduino Nano, 9V batteries for board power as 
 well as 4AA batteries to power TT motors. The car avoids obstacles by using a ultrasonic sensor.
 Use screw terminals to secure most wires to the board, as well as low profile jumpers for best organization.
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pinout:
 
 Arduino Nano:
@@ -15,7 +19,7 @@ D4 -> Ultrasonic Echo
 D5 -> 
 D6 ->  
 D7 ->  Motor Controller IN2
-D8 -> Motor Controller IN1
+D8 -> Motor Controller IN1   
 D9 -> Motor Controller IN4
 D10 -> Motor Controller (ENA)
 D11 ->  Motor Controller FNB (ENB)
@@ -47,14 +51,14 @@ int current_button = HIGH;
 int state = 0;
 
 int left_motor_pin_1 =  8;
-int left_motor_pin_2 = 3;
-int right_motor_pin_1 = 4;
-int right_motor_pin_2 = 5;
+int left_motor_pin_2 = 7;
+int right_motor_pin_1 = 9;
+int right_motor_pin_2 = 12;
 int ena = 11;
 int fnb = 10;
 
-int trig_pin = 7;
-int echo_pin = 6;
+int trig_pin = 3;
+int echo_pin = 4;
 float duration, distance;
 
 void setup_pins(){
