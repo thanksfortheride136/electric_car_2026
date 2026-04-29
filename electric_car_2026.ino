@@ -45,6 +45,8 @@ Signal Pin bottom left -> D2
 Bottom Right Pin -> Shared GND
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+#include <Servo.h>
+
 int button_pin = 2;
 int last_button = HIGH;
 int current_button = HIGH;
@@ -52,8 +54,10 @@ int state = 0;
 
 int left_motor_pin_1 =  8;
 int left_motor_pin_2 = 7;
+
 int right_motor_pin_1 = 9;
 int right_motor_pin_2 = 12;
+
 int ena = 11;
 int fnb = 10;
 
@@ -61,7 +65,16 @@ int trig_pin = 3;
 int echo_pin = 4;
 float duration, distance;
 
+Servo sweep_servo;
+int sweep_servo_pin = 6;
+
+int servo_pos = 20;
+int servo_direction = 1;
+unsigned long last_servo_move = 0;
+int servo_move_interval = 15;
+
 void setup_pins(){
+  sweep_servo.attach(sweep_servo_pin);
   pinMode(left_motor_pin_1, OUTPUT);
   pinMode(left_motor_pin_2, OUTPUT);
   pinMode(right_motor_pin_1, OUTPUT);
@@ -148,17 +161,34 @@ void turn_motors(int time){
   delay(time);
  
 }
+//NEEDS TO BE CORRECTED TO USE WITH A BLUE MICRO SERVO THAT 180 DEGREES.
+void sweep_servo_motor(){
+  
+  if (millis() - last_servo_move >= servo_move_interval) {
+    last_servo_move = millis();
+
+    servo_pos += servo_direction;
+
+    if (servo_pos >= 140 || servo_pos <= 20) {
+      servo_direction *= -1;
+    }
+
+    sweep_servo.write(servo_pos);
+  }
+}
 
 void loop(){
-  float car_distance = read_distance();
-  on_button();
-  if (state == 0) {
-    stop_motors();
-  } else if (car_distance > 10.0) {
-      run_motors();
-  } else {
-      stop_motors();
-      backup_motors(1000);
-      turn_motors(300);
-}
+//   sweep_servo_motor(); //this cannot stay here ,results in looping
+//   float car_distance = read_distance();
+//   on_button();
+//   if (state == 0) {
+//     stop_motors();
+//   } else if (car_distance > 10.0) {
+//       run_motors();
+//   } else {
+//       stop_motors();
+//       backup_motors(1000);
+//       turn_motors(300);
+// }
+  run_motors();
 }
